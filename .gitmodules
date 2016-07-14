@@ -1,0 +1,9 @@
+[submodule "docker-ratticdb-nginx"]
+	path = docker-ratticdb-nginx
+	url = https://github.com/kilerkarol/docker-ratticdb-nginx.git
+[submodule "docker-ratticdb-uwsgi"]
+	path = docker-ratticdb-uwsgi
+	url = https://github.com/kilerkarol/docker-ratticdb-uwsgi.git
+[submodule "mysql"]
+	path = mysql
+	url = https://github.com/docker-library/mysql.git
