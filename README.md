@@ -12,8 +12,8 @@ chcon -Rt svirt_sandbox_file_t /root/docker/mysql/ratticdb
 
 ```
 docker run -d \
+	--restart=always \
 	--name ratticdb \
-  	--restart=always \
   	-v /root/docker_vol/mysql/ratticdb:/var/lib/mysql \
   	-e MYSQL_ROOT_PASSWORD=r00tme \
   	-e MYSQL_DATABASE=rattic \
@@ -47,16 +47,17 @@ then run it
 
 ```
 docker run -d \
+	--restart=always \
 	--name 'ratticdb-uwsgi' \
   	--link 'ratticdb:mysql' \
-		-e 'TIMEZONE=UTC' \
-	  -e 'VIRTUAL_HOST=somedomain.example.com' \
-	  -e 'SECRETKEY=someverysecretkeyforsessions' \
-	  -e 'EMAIL_HOST=smtp.example.com' \
-	  -e 'EMAIL_PORT=587' \
-	  -e 'EMAIL_USER=example@example.com' \
-	  -e 'EMAIL_PASSWORD=someemailpassword' \
-	  -e 'EMAIL_FROM=emailed-from@example.com' \
+	-e 'TIMEZONE=UTC' \
+	-e 'VIRTUAL_HOST=somedomain.example.com' \
+	-e 'SECRETKEY=someverysecretkeyforsessions' \
+	-e 'EMAIL_HOST=smtp.example.com' \
+	-e 'EMAIL_PORT=587' \
+	-e 'EMAIL_USER=example@example.com' \
+	-e 'EMAIL_PASSWORD=someemailpassword' \
+	-e 'EMAIL_FROM=emailed-from@example.com' \
   	kilerkarol/ratticdb-uwsgi
 ```
 
@@ -70,13 +71,14 @@ docker build -t kilerkarol/ratticdb-nginx .
 then run it
 
 ```
-docker run \
-		--name 'ratticdb-nginx' \
-		-p 80:80 \
-		-e 'PROXY_MODE=on' \
-		-e 'VIRTUAL_HOST=somedomain.example.com' \
-		-e 'CERT_NAME=default' \
-		--link 'ratticdb-uwsgi:uwsgi' \
-		--volumes-from 'ratticdb-uwsgi' \
+docker run -d \
+	--restart=always \
+	--name 'ratticdb-nginx' \
+	-p 80:80 \
+	-e 'PROXY_MODE=on' \
+	-e 'VIRTUAL_HOST=somedomain.example.com' \
+	-e 'CERT_NAME=default' \
+	--link 'ratticdb-uwsgi:uwsgi' \
+	--volumes-from 'ratticdb-uwsgi' \
   	kilerkarol/ratticdb-nginx
 ```
